@@ -1,0 +1,35 @@
+<!Doctype html>
+<html>
+<head>
+	<title>Snakes and Ladders</title>
+	<style>
+		canvas { position: absolute;}
+		#board-layer {z-index: 1;}
+		#player-layer{z-index:2;}
+		#canvas-area {
+			position: relative;
+			width: 550px;
+			height: 600px;
+		}
+	</style>
+</head>
+<body>
+<div id="canvas-area">	
+	<canvas id="board-layer" width="550" height="550"></canvas>
+
+	<canvas id="player-layer" width="550" height="550"></canvas>
+</div>
+
+<div>
+	<button onclick="rollTheDice()">Roll The Dice</button>
+	<h3 id="current-dice-number"></h3>
+	<button onclick="createPlayer()">Add Player</button>
+</div>
+
+</body>
+<script src="helper.js"></script>
+<script src="draw.js"></script>
+<script src="board.js"></script>
+<script src="ladder.js"></script>
+<script src="app.js"></script>
+</html>
