@@ -43,13 +43,15 @@ function drawLadder(ladder){
 	
     draw.line(l2p1, l2p2, 'black', boardCtx);
 
-	var sp = helper.pointAtPerpendicularDistance(l1p1, -1/m, 10);
+	var dir = Math.sign(-m);
+
+	var sp = helper.pointAtPerpendicularDistance(l1p1, -1/m, dir * 10);
 	var spo = helper.pointAtPerpendicularDistance(sp, m, 15);
     draw.line(sp, spo, 'black', boardCtx);
 	var spOld = sp;
 
-	while(sp.y > l1p2.y + 8){
-		sp = helper.pointAtPerpendicularDistance(spOld, -1/m, 10);
+	while(sp.y > l1p2.y + 8 && sp.y < l1p1.y){		
+		sp = helper.pointAtPerpendicularDistance(spOld, -1/m, dir * 10);
 		spo = helper.pointAtPerpendicularDistance(sp, m, 15);
         draw.line(sp, spo, 'black', boardCtx);
 		spOld = sp;
