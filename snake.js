@@ -42,9 +42,13 @@ function drawSnake(snake){
     var ptHalf;
     var controlPoint;
 
-    var turnDistance =  helper.distanceBetweenTwoPoints(headPt, tailPt) / 5; 
+    boardCtx.lineWidth = 15;
 
-    while(pt.y < tailPt.y ){
+    var turnDistance =  helper.distanceBetweenTwoPoints(headPt, tailPt) / 5;
+
+    drawHead(headPt, 15);
+
+    while(Math.ceil(pt.y) < tailPt.y ){
         boardCtx.beginPath();
         boardCtx.moveTo(pt.x,pt.y);
         
@@ -55,14 +59,19 @@ function drawSnake(snake){
         controlPoint = helper.pointAtPerpendicularDistance(ptHalf, m, curveDir * turnDistance);
         
         boardCtx.quadraticCurveTo( controlPoint.x, controlPoint.y, pt.x, pt.y,);
+        boardCtx.lineWidth = boardCtx.lineWidth - 3;
         boardCtx.stroke();
 
         boardCtx.fillStyle = 'red';
 	}
 
-       
+    boardCtx.lineWidth = 1;
     draw.line(headPt, tailPt, 'red', boardCtx);
 
+}
+
+function drawHead(headPt, neckWidth){
+    boardCtx.fillRect(headPt.x, headPt.y-5, 10, 10);
 }
 
 
