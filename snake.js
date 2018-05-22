@@ -8,7 +8,7 @@ var snakes = [
 		tail: 19
     },
     {
-		head: 52,
+		head: 100,
 		tail: 10
 	}
 ];
@@ -59,14 +59,14 @@ function drawSnake(snake){
         controlPoint = helper.pointAtPerpendicularDistance(ptHalf, m, curveDir * turnDistance);
         
         boardCtx.quadraticCurveTo( controlPoint.x, controlPoint.y, pt.x, pt.y,);
-        boardCtx.lineWidth = boardCtx.lineWidth - 3;
+        boardCtx.lineWidth = boardCtx.lineWidth - 2;
         boardCtx.stroke();
 
         boardCtx.fillStyle = 'red';
 	}
 
     boardCtx.lineWidth = 1;
-    draw.line(headPt, tailPt, 'red', boardCtx);
+    //draw.line(headPt, tailPt, 'red', boardCtx);
 
 }
 

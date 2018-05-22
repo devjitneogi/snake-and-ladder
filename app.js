@@ -13,11 +13,6 @@ var t2 = new Date();
 var dt = t2-t1; // in mili secs
 
 
-
-var playerLayer = document.getElementById('player-layer');
-var playerLayerCtx = playerLayer.getContext('2d');
-
-
 function drawPlayers(players){
 	for(var i=0;i<players.length;i++){
 		drawPlayer(players[i]);
@@ -28,41 +23,55 @@ function drawPlayer(player){
 	var number = player.getCurrentCell();
 	cellX = getColFromNumber(number) * cellWidth;
 	cellY = getRowFromNumber(number) * cellHeight;
-	drawPlayerATxy(cellX + cellWidth/2, cellY + cellHeight/2, player.getColor());
+	//drawPlayerATxy(cellX + cellWidth/2, cellY + cellHeight/2, player.getColor());
+
+	draw.fillCircle({x: cellX + cellWidth/2, y: cellY + cellHeight/2}, 15, player.getColor(), player.getContext());
 }
 
-function erasePlayerAt(n){
+function erasePlayerAt(n, ctx){
 	cellX = getColFromNumber(n) * cellWidth;
 	cellY = getRowFromNumber(n) * cellHeight;
-	playerLayerCtx.clearRect(cellX, cellY, cellWidth, cellHeight);
+	ctx.clearRect(cellX, cellY, cellWidth, cellHeight);
 }
 
 var playerSpeed = 10;
-function movePlayerAnimation(startCell, endCell){
+function movePlayerAnimation(startCell, endCell, player){
 	var startX = getColFromNumber(startCell) * cellWidth;
 	var startY = getRowFromNumber(startCell) * cellHeight;
 	var endX = getColFromNumber(endCell) * cellWidth;
 	var endY = getRowFromNumber(endCell) * cellHeight;
 	
-	moveOneCell(startCell);
+	moveOneCell(startCell, player);
 	startCell = startCell + 1;
 	
 	if(startCell < endCell){
 		setTimeout(function(start, end){
-			movePlayerAnimation(start,end);
+			movePlayerAnimation(start,end, player);
 		},300, startCell, endCell);
+	}
+
+	if(startCell == endCell){
+		for(var i = 0; i< ladders.length; i++ ){
+			if(ladders[i].bottom == endCell){
+				// move to end cell
+			}
+		}
+
+		//check for snake head
 	}
 }
 
 
 
-function moveOneCell(start){
-	erasePlayerAt(start);
+function moveOneCell(start, player){
+	erasePlayerAt(start, player.getContext());
 	var end = start + 1;
 	var endX = getColFromNumber(end) * cellWidth;
 	var endY = getRowFromNumber(end) * cellHeight;
 	
-	drawPlayerATxy(endX + cellWidth/2, endY + cellHeight/2);
+	//drawPlayerATxy(endX + cellWidth/2, endY + cellHeight/2);
+
+	draw.fillCircle({x: endX + cellWidth/2, y: endY + cellHeight/2}, 15, player.getColor(), player.getContext());
 }
 
 function drawPlayerATxy(x, y, color){
@@ -93,9 +102,16 @@ function getRandomInt(min, max){
 	return randomInt;
 } 
 
-function player(color='red'){
+function player(color='red',index){
 	var currentCell = 1;
 	var color = color;
+
+	var playerCanvas = document.createElement('canvas');
+	playerCanvas.width = 550;
+	playerCanvas.height =  550;
+	playerCanvas.style.zIndex = 4;
+	document.getElementById('canvas-area').appendChild(playerCanvas);
+	var ctx = playerCanvas.getContext('2d');
 	
 	this.setCurrentCell =  function(n){
 		currentCell = n;
@@ -110,8 +126,12 @@ function player(color='red'){
 	}
 	
 	this.addToCurrentCell = function(n){
-		movePlayerAnimation(currentCell, currentCell+n);
+		movePlayerAnimation(currentCell, currentCell+n, this);
 		currentCell = currentCell + n;
+	}
+
+	this.getContext = function(){
+		return ctx;
 	}
 }
 
@@ -121,7 +141,7 @@ function moveFromAtoB(){
 
 function createPlayer(){
 	var color = playerColor[players.length];
-	players.push(new player(color));
+	players.push(new player(color,players.length));
 	currentPlayer  = players[currentPlayerIndex];
 	drawPlayers(players);
 }
