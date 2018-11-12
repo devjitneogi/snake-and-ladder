@@ -23,7 +23,7 @@
         cellX = getColFromNumber(number) * cellWidth;
         cellY = getRowFromNumber(number) * cellHeight;
         
-        boardCtx.fillStyle = 'hsl('+ 360*Math.random() +',89%,70%)'; // color of the cell
+        boardCtx.fillStyle = 'hsl('+ 360*Math.random() +',89%,88%)'; // color of the cell
         boardCtx.fillRect(cellX, cellY, cellWidth, cellHeight);
         boardCtx.strokeRect(cellX, cellY, cellWidth , cellHeight);
         boardCtx.fillStyle = 'black'; // text color

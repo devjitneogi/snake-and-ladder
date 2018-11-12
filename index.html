@@ -11,6 +11,11 @@
 			width: 550px;
 			height: 600px;
 		}
+		.player-color {
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+		}
 	</style>
 </head>
 <body>
@@ -20,13 +25,26 @@
 </div>
 
 <div>
-	<button onclick="rollTheDice()">Roll The Dice</button>
+	<button onclick="rollTheDiceAndEmit()">Roll The Dice</button>
 	<h3 id="current-dice-number"></h3>
-	<button onclick="createPlayer()">Add Player</button>
+
+	<h3 id="current-player"></h3>
+	<button onclick="createPlayerAndEmit()">Add Player</button>
 	<ul id="player-list"></ul>
 </div>
 
 </body>
+<script src = "/socket.io/socket.io.js"></script>
+   
+   <script>
+	  var socket = io();
+	  socket.on('playerAdded',function(data) {
+		createPlayer(data.color);
+	  });
+	  socket.on('diceRolled',function(data) {
+		rollTheDice(data.currentDiceNumber);
+      });
+   </script>
 <script src="helper.js"></script>
 <script src="draw.js"></script>
 <script src="board.js"></script>

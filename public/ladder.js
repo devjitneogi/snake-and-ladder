@@ -1,15 +1,23 @@
 var ladders = [
 	{
-		bottom: 5,
-		top: 18
+		bottom: 29,
+		top: 47
 	},
 	{
-		bottom: 9,
-		top: 26
+		bottom: 40,
+		top: 77
 	},
 	{
-		bottom: 20,
-		top: 56
+		bottom: 66,
+		top: 99
+	},
+	{
+		bottom: 6,
+		top: 13
+	},
+	{
+		bottom: 4,
+		top: 34
 	}
 ];
 

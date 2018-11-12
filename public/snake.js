@@ -4,12 +4,28 @@ var snakes = [
 		tail: 34
     },
     {
-		head: 64,
+		head: 84,
 		tail: 19
     },
     {
-		head: 100,
-		tail: 10
+		head: 65,
+		tail: 7
+    },
+    {
+		head: 12,
+		tail: 8
+    },
+    {
+		head: 21,
+		tail: 3
+    },
+    {
+		head: 72,
+		tail: 48
+    },
+    {
+		head: 44,
+		tail: 5
 	}
 ];
 
@@ -42,11 +58,11 @@ function drawSnake(snake){
     var ptHalf;
     var controlPoint;
 
-    boardCtx.lineWidth = 15;
+    boardCtx.lineWidth = 12;
 
     var turnDistance =  helper.distanceBetweenTwoPoints(headPt, tailPt) / 5;
 
-    drawHead(headPt, 15);
+    
 
     while(Math.ceil(pt.y) < tailPt.y ){
         boardCtx.beginPath();
@@ -59,19 +75,40 @@ function drawSnake(snake){
         controlPoint = helper.pointAtPerpendicularDistance(ptHalf, m, curveDir * turnDistance);
         
         boardCtx.quadraticCurveTo( controlPoint.x, controlPoint.y, pt.x, pt.y,);
-        boardCtx.lineWidth = boardCtx.lineWidth - 2;
+        boardCtx.lineWidth = boardCtx.lineWidth - 1.5;
         boardCtx.stroke();
 
         boardCtx.fillStyle = 'red';
 	}
 
-    boardCtx.lineWidth = 1;
-    //draw.line(headPt, tailPt, 'red', boardCtx);
+    drawHead(headPt, 15);
 
 }
 
 function drawHead(headPt, neckWidth){
-    boardCtx.fillRect(headPt.x, headPt.y-5, 10, 10);
+    boardCtx.beginPath();
+    
+    boardCtx.moveTo(headPt.x - 5, headPt.y - 3);
+    boardCtx.bezierCurveTo(headPt.x, headPt.y - 20, headPt.x + 20, headPt.y - 20, headPt.x+25, headPt.y );
+
+    boardCtx.moveTo(headPt.x+7, headPt.y + 2);
+    boardCtx.bezierCurveTo(headPt.x+20, headPt.y + 3, headPt.x + 20, headPt.y + 5, headPt.x+25, headPt.y);
+
+    boardCtx.moveTo(headPt.x, headPt.y +5);
+    boardCtx.bezierCurveTo(headPt.x+5, headPt.y + 5, headPt.x + 20, headPt.y + 15, headPt.x+25, headPt.y );
+
+    boardCtx.moveTo(headPt.x+25, headPt.y);
+    boardCtx.bezierCurveTo(headPt.x+25, headPt.y + 3, headPt.x + 35, headPt.y - 5, headPt.x+45, headPt.y);
+
+    boardCtx.moveTo(headPt.x+25, headPt.y);
+    boardCtx.bezierCurveTo(headPt.x+25, headPt.y - 4, headPt.x + 35, headPt.y + 3, headPt.x+45, headPt.y +3);
+
+    boardCtx.lineWidth = 1;
+    // line color
+    boardCtx.strokeStyle = 'black';
+    boardCtx.stroke();
+
+    draw.fillCircle({x: headPt.x + 11, y: headPt.y -4}, 3, 'black', boardCtx);
 }
 
 
