@@ -3,6 +3,8 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
+const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
+
 app.get('/', function(req, res) {
    res.sendfile('index.html');
 });
@@ -28,6 +30,6 @@ io.on('connection', function(socket) {
      });
  });
 
-http.listen(3000, function() {
-   console.log('listening on *:3000');
+http.listen(DEFAULT_PORT, function() {
+   console.log('listening on *:'+DEFAULT_PORT);
 });
