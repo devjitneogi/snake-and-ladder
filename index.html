@@ -16,6 +16,10 @@
 			height: 20px;
 			border-radius: 50%;
 		}
+		#name-error{
+			color: red;
+			display: none;
+		}
 	</style>
 </head>
 <body>
@@ -25,11 +29,20 @@
 </div>
 
 <div>
-	<button onclick="rollTheDiceAndEmit()">Roll The Dice</button>
+	<button id="roll-dice" onclick="rollTheDiceAndEmit()">Roll The Dice</button>
 	<h3 id="current-dice-number"></h3>
 
 	<h3 id="current-player"></h3>
-	<button onclick="createPlayerAndEmit()">Add Player</button>
+	<div id="get-player-details">
+		<input id="player-name" placeholder="enter an alias"></input>
+		<span id="name-error">Please enter a name to join the game</span>
+		<button onclick="createPlayerAndEmit()">Join</button>
+	</div>
+
+	<div id="show-player-details">
+		
+	</div>
+
 	<ul id="player-list"></ul>
 </div>
 
@@ -39,7 +52,7 @@
    <script>
 	  var socket = io();
 	  socket.on('playerAdded',function(data) {
-		createPlayer(data.color);
+		createPlayer(data.color, data.name);
 	  });
 	  socket.on('diceRolled',function(data) {
 		rollTheDice(data.currentDiceNumber);

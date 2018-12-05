@@ -5,6 +5,7 @@ var players = [];
 var playerColor = ['red', 'green', 'blue', 'yellow'];
 var currentPlayer;
 var currentPlayerIndex = 0;
+var me = null;
 
 function drawPlayers(players){
 	for(var i=0;i<players.length;i++){
@@ -94,8 +95,15 @@ function rollTheDice(diceNumber){
 function switchToNextPlayer(){
 	currentPlayerIndex = (currentPlayerIndex==players.length-1)?0:currentPlayerIndex + 1
 	currentPlayer = players[currentPlayerIndex];
-	document.getElementById('current-player').innerHTML = 'Next Player #'+ (currentPlayerIndex+1);
-
+	document.getElementById('current-player').innerHTML = currentPlayer.getName() + "'s Turn"
+	if(me === currentPlayer){
+		// enable roll the dice
+		document.getElementById('roll-dice').style.display = 'block';
+	}
+	else{
+		//disable roll the dice
+		document.getElementById('roll-dice').style.display = 'none';
+	}
 }
 
 function getRandomInt(min, max){
@@ -103,10 +111,11 @@ function getRandomInt(min, max){
 	return randomInt;
 } 
 
-function player(color='red',index){
+function player(color='red', index, name){
 	var currentCell = 1;
 	var color = color;
 	var index = index;
+	var name = name;
 
 	var playerCanvas = document.createElement('canvas');
 	playerCanvas.width = 550;
@@ -135,27 +144,39 @@ function player(color='red',index){
 	this.getContext = function(){
 		return ctx;
 	}
+
+	this.getName = function(){
+		return name;
+	}
 }
 
 function createPlayerAndEmit(){
 	var index = players.length;
 	var color = playerColor[index];
-	createPlayer(color);
-	socket.emit('playerAdded', {'color': color, 'index': index});
+	var name =  document.getElementById('player-name').value;
+	if(!name){
+		document.getElementById('name-error').style.display = 'block';
+		return;
+	}
+	document.getElementById('name-error').style.display = 'none';
+	me = createPlayer(color, name);
+	socket.emit('playerAdded', {'color': color, 'index': index, 'name': name});
 }
 
-function createPlayer(color){	
-	players.push(new player(color,players.length));
+function createPlayer(color, name){
+	var p = new player(color,players.length,name);
+	players.push(p);
 	currentPlayer  = players[currentPlayerIndex];
 	drawPlayers(players);
 	updatePlayerListHtml(players);
+	return p;
 }
 
 function updatePlayerListHtml(players) {
 	var playerList = '';
 
 	for(var i=0; i< players.length; i++){
-		playerList += `<li>Player #${i+1} <div class="player-color" style="background-color:${players[i].getColor()};"></div></li>`
+		playerList += `<li>${players[i].getName()} <div class="player-color" style="background-color:${players[i].getColor()};"></div></li>`
 	}
 	document.getElementById('player-list').innerHTML = playerList;
 }

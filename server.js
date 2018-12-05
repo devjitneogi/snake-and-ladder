@@ -7,7 +7,6 @@ app.get('/', function(req, res) {
    res.sendfile('index.html');
 });
 
-
 app.use(express.static('public'));
 
 //Whenever someone connects this gets executed
